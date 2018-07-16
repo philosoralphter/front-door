@@ -1,6 +1,8 @@
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
-const ACCESS_CODE = '1701';
+
+const ACCESS_CODE = '4802';
+const CALL_NUMS = require('../../../cfg.prv').ringThese;
 
 
 
@@ -10,13 +12,14 @@ module.exports = {
         const gather = response.gather({
             input: 'dtmf',
             numDigits: 1,
-            timeout: 4,
+            timeout: 7,
             action: '/handle-input',
             method: 'POST'
         });
 
-        response.pause('2');
-        gather.say('Press 1 to call the tenant.  Press 2 if you have an access code.');
+        // response.pause('2');
+        gather.play('./assets/tos_bosun_whistle_1.mp3');
+        gather.say('Welcome to fog set tower.  Press 1 to call the tenant.  Press 2 if you have an access code.');
 
         //if no input
         response.redirect({
@@ -54,21 +57,28 @@ module.exports = {
 
     dialTenant: function () {
         const response = new VoiceResponse();
-        const dial = response.dial;
+        const dial = response.dial({
+            timeout: 15,
+            timeLimit: 60
+        });
 
-        // dial.number();
-        // dial.number();
-        dial.timeout(15);
+        _.each(CALL_NUMS, (number) => {
+            dial.number(number);
+        });
 
         return response.toString();
     },
 
     checkCode: function (body) {
 
-        if (body.Digits === '1701' ) {
-            //Forward Call
-            return this.accessGranted()
-        }  else {
+        if (body.Digits === ACCESS_CODE) {
+            return this.accessGranted();
+        }
+        else if (body.Digits === '1701' ) {
+            return this.beamUp();
+        } else if (body.Digits === '69'){
+            return easterEggs.kayron();
+        }else {
             return this.accessDenied();
         }
     },
@@ -94,6 +104,27 @@ module.exports = {
 
         response.say('Access Granted');
         response.play({digits: 'ww9'});
+
+        return response.toString();
+    }
+};
+
+
+let easterEggs = {
+    kayron: () => {
+        const response = new VoiceResponse();
+        response.say('Is that you, Kayron?');
+        response.hangup();
+    },
+
+    beamUp: () => {
+        let response = new VoiceResponse();
+
+        response.pause('2');
+
+        response.say('Standby for transport.');
+
+        response.play('./assets/tng_transporter6_clean.mp3');
 
         return response.toString();
     }
