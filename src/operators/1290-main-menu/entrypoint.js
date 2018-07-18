@@ -1,3 +1,5 @@
+
+const _ = require('lodash');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 
@@ -18,13 +20,13 @@ module.exports = {
         });
 
         // response.pause('2');
-        gather.play('./assets/tos_bosun_whistle_1.mp3');
-        gather.say('Welcome to fog set tower.  Press 1 to call the tenant.  Press 2 if you have an access code.');
+        gather.play('./assets/tos_bosun_whistle_1_trimmed_lo_vol.mp3');
+        gather.say('Welcome to fog-set, tower.  Press 1, or hold, to call the tenant.  Press 2 if you have an access code.');
 
         //if no input
         response.redirect({
             method: 'POST'
-        }, '/welcome');
+        }, '/dial-tenant');
 
 
         return response.toString();
@@ -41,7 +43,7 @@ module.exports = {
             const gather = response.gather({
                 input: 'dtmf',
                 numDigits: 4,
-                timeout: 8,
+                timeout: 10,
                 action: '/check-code',
                 method: 'POST'
             });
@@ -57,14 +59,18 @@ module.exports = {
 
     dialTenant: function () {
         const response = new VoiceResponse();
+        response.say('Calling Tenant.');
+
+
         const dial = response.dial({
             timeout: 15,
-            timeLimit: 60
+            timeLimit: 120
         });
 
         _.each(CALL_NUMS, (number) => {
             dial.number(number);
         });
+
 
         return response.toString();
     },
@@ -75,8 +81,8 @@ module.exports = {
             return this.accessGranted();
         }
         else if (body.Digits === '1701' ) {
-            return this.beamUp();
-        } else if (body.Digits === '69'){
+            return easterEggs.beamUp();
+        } else if (body.Digits === '69' || body.Digits === '6969'){
             return easterEggs.kayron();
         }else {
             return this.accessDenied();
@@ -106,6 +112,13 @@ module.exports = {
         response.play({digits: 'ww9'});
 
         return response.toString();
+    },
+
+    //UNUSED
+    noResponse: function () {
+        const response = new VoiceResponse();
+        response.say('No response received.  Goodbye.');
+
     }
 };
 
@@ -113,16 +126,17 @@ module.exports = {
 let easterEggs = {
     kayron: () => {
         const response = new VoiceResponse();
-        response.say('Is that you, Kayron?');
+        response.say('Is that you? Kay Ron?');
         response.hangup();
+        return response.toString();
     },
 
     beamUp: () => {
         let response = new VoiceResponse();
 
-        response.pause('2');
+        response.pause('1');
 
-        response.say('Standby for transport.');
+        response.say({voice: 'alice'}, 'Standby for transport.');
 
         response.play('./assets/tng_transporter6_clean.mp3');
 

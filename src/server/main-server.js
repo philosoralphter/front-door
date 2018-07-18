@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const welcome = require('../operators/1290-main-menu/welcome.js');
-const entrypoint = require('../operators/1290-main-menu/entrypoint');
+const entrypoint = require('../operators/1290-main-menu/entrypoint.js');
 
 let publicAssetsDir = path.join(__dirname + '../../../assets/public');
 
@@ -19,7 +19,7 @@ app.use('/assets', express.static(publicAssetsDir));
 
 //Routes
 app.post('/', (req, resp, next) => {
-    console.log('Incoming Request: ', req.body);
+    console.log('Incoming Request for /: ', req.body);
 
     let response = entrypoint.main();
 
@@ -30,7 +30,7 @@ app.post('/', (req, resp, next) => {
 });
 
 app.post('/handle-input', (req, resp, next) => {
-    console.log('Incoming Request: ', req.body);
+    console.log('Incoming Request for /handle-input: ', req.body);
 
     let response = entrypoint.handleInput(req.body);
 
@@ -41,7 +41,7 @@ app.post('/handle-input', (req, resp, next) => {
 });
 
 app.post('/check-code', (req, resp, next) => {
-    console.log('Incoming Request: ', req.body);
+    console.log('Incoming Request for /check-code: ', req.body);
 
     let response = entrypoint.checkCode(req.body);
 
@@ -54,7 +54,7 @@ app.post('/check-code', (req, resp, next) => {
 
 //Fallback
 app.post('/welcome', (req, resp, next) => {
-    console.log('Incoming Request: ', req.body);
+    console.log('Incoming Request to /welcome: ', req.body);
 
     let response = welcome();
 
@@ -64,12 +64,34 @@ app.post('/welcome', (req, resp, next) => {
     resp.status(200).send();
 });
 
+app.post('/no-response', (req, resp, next) => {
+    console.log('Incoming Request to /no-response: ', req.body);
+
+    let response = entrypoint.noResponse();
+
+    resp.set({'Content-Type': 'text/xml'});
+
+    resp.write(response);
+    resp.status(200).send();
+});
+
+app.post('/dial-tenant', (req, resp, next) => {
+    console.log('Incoming Request to /no-response: ', req.body);
+
+    let response = entrypoint.dialTenant();
+
+    resp.set({'Content-Type': 'text/xml'});
+
+    resp.write(response);
+    resp.status(200).send();
+});
 
 
-//Fallback
+
+//Error Fallback
 app.use('/', (err, req, resp, next) => {
     console.log('Incoming Request Failed to Route: ', req.path, err);
-    resp.status(500).write(entrypoint.noAccess()).send();
+    resp.status(500).write(entrypoint.error()).send();
     next();
 });
 
