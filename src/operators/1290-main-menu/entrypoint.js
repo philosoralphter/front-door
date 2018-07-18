@@ -43,7 +43,7 @@ module.exports = {
             const gather = response.gather({
                 input: 'dtmf',
                 numDigits: 4,
-                timeout: 10,
+                timeout: 4,
                 action: '/check-code',
                 method: 'POST'
             });
