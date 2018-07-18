@@ -2,9 +2,10 @@
 const _ = require('lodash');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
+const ENV_VARS = require('../../../cfg.prv');
 
-const ACCESS_CODE = '4802';
-const CALL_NUMS = require('../../../cfg.prv').ringThese;
+const ACCESS_CODE = ENV_VARS.ACCCESS_CODE;
+const CALL_NUMS = ENV_VARS.ringThese;
 
 
 
