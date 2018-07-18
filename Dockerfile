@@ -9,4 +9,3 @@ COPY ./cfg.prv /usr/local/app/cfg.prv
 COPY ./index.js /usr/local/app/index.js
 
 ENTRYPOINT ["node", "/usr/local/app/index.js"]
-
