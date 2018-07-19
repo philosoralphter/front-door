@@ -33,8 +33,7 @@ module.exports = {
             method: 'POST'
         });
 
-        // response.pause('2');
-        gather.play('./assets/tos_bosun_whistle_1_trimmed_lo_vol.mp3');
+        response.pause('2');
         gather.say('Welcome to fog-set, tower.  Press 1, or hold, to call the tenant.  Press 2 if you have an access code.');
 
         //if no input
@@ -47,13 +46,14 @@ module.exports = {
     },
 
     handleInput: function (body) {
-        const response = new VoiceResponse();
 
         if (body.Digits === '1' ) {
             //Forward Call
             return this.dialTenant();
+
         } else if (body.Digits === '2') {
             //Accept code
+            const response = new VoiceResponse();
             const gather = response.gather({
                 input: 'dtmf',
                 numDigits: ACCESS_CODE_DIGITS,
@@ -64,8 +64,8 @@ module.exports = {
 
             gather.say('Enter your code.');
 
-
             return response.toString();
+
         } else {
             return this.error();
         }
@@ -73,8 +73,8 @@ module.exports = {
 
     dialTenant: function () {
         const response = new VoiceResponse();
-        response.say('Calling Tenant.');
 
+        response.say('Calling Tenant.');
 
         const dial = response.dial({
             timeout: 15,
@@ -84,7 +84,6 @@ module.exports = {
         _.each(CALL_NUMS, (number) => {
             dial.number(number);
         });
-
 
         return response.toString();
     },

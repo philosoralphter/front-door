@@ -6,6 +6,8 @@ module.exports = {
 
         response.pause('1');
 
+        response.play('./assets/tos_bosun_whistle_1_trimmed_lo_vol.mp3');
+
         response.say({voice: 'alice'}, 'Standby for transport.');
 
         response.play('./assets/tng_transporter6_clean.mp3');
@@ -29,6 +31,5 @@ module.exports = {
         response.hangup();
 
         return response.toString();
-    },
-    '1702': this['1700'],
+    }
 };
