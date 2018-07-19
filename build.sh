@@ -9,7 +9,24 @@ BUILD=$(git rev-parse HEAD | cut -c1-6)
 echo "Building for commit $BUILD"
 docker build -t $REPO:$BUILD .
 
+#Check build was successful
+if [ $? -eq 0 ]
+then
+    echo -e "\nBuild Successful."
+else
+    echo -e "\nBuild Failed with code $?"
+    exit 1
+fi
 
 #Push image
-echo "Pushing Image..."
+echo -e "\nPushing Image..."
 docker push $REPO:$BUILD
+
+#Check push was successful
+if [ $? -eq 0 ]
+then
+    echo -e "\nPush Successful."
+else
+    echo -e "\nPush Failed with code $?"
+    exit 1
+fi
