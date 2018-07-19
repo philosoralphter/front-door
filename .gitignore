@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
-cfg.prv
-
+cfg.prv.js
+*.prv
 
 #everything below for webstorm, etc
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm

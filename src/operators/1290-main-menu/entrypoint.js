@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
-const ENV_VARS = require('../../../cfg.prv');
+const ENV_VARS = require('../../../cfg.prv.js');
 
 const ACCESS_CODE = ENV_VARS.ACCCESS_CODE;
 const CALL_NUMS = ENV_VARS.CALL_NUMS;
