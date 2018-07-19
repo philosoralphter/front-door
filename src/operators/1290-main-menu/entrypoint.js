@@ -45,8 +45,7 @@ module.exports = {
         response.redirect({
             method: 'POST'
         }, '/dial-tenant');
-
-
+        
         return response.toString();
     },
 
