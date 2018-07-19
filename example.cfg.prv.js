@@ -6,5 +6,6 @@ module.exports = {
     CALL_NUMS: [], //list phone number strings in xxxxxxxxxx, xxx-xxx-xxxx, or E111 format
 
     ACCESS_CODE: '1234',
-    ACCESS_CODE_DIGITS: 4 //code is checked immediately after N digits entered
+    ACCESS_CODE_DIGITS: 4, //code is checked immediately after N digits entered
+    OPEN_DOOR_DIAL: 'ww9' //what to dial to open your door (use 'w' to add a brief .5 second pause.)
 };

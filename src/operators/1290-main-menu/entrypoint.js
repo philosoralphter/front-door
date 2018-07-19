@@ -6,6 +6,9 @@ const ENV_VARS = require('../../../cfg.prv.js');
 const ACCESS_CODE = ENV_VARS.ACCCESS_CODE;
 const ACCESS_CODE_DIGITS = Math.max(ENV_VARS.ACCCESS_CODE.DIGITS, 4);
 const CALL_NUMS = ENV_VARS.CALL_NUMS;
+const OPEN_DOOR_DIAL = ENV_VARS.OPEN_DOOR_DIAL;
+
+const EASTER_EGGS = require('../../../easter-eggs.prv');
 
 if (_.isUndefined(ACCESS_CODE)) {
     console.warn('Warning: No ACCESS_CODE set');
@@ -118,7 +121,7 @@ module.exports = {
         const response = new VoiceResponse();
 
         response.say('Access Granted');
-        response.play({digits: 'ww9'});
+        response.play({digits: OPEN_DOOR_DIAL});
 
         return response.toString();
     },
