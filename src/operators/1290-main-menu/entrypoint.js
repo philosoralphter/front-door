@@ -3,7 +3,7 @@ const path = require('path');
 const _ = require('lodash');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
-const ENV_VARS = require('../../../cfg.prv.js');
+const ENV_VARS = require('../../../config/cfg.prv.js');
 
 //Load codes and phoen numbers
 const ACCESS_CODE = ENV_VARS.ACCESS_CODE;
@@ -12,8 +12,8 @@ const CALL_NUMS = ENV_VARS.CALL_NUMS;
 const OPEN_DOOR_DIAL = ENV_VARS.OPEN_DOOR_DIAL;
 
 //Load Easter Eggs
-const easterEggFile = '../../../easter-eggs.prv.js';
-const exampleEasterEggFile = '../../../example.easter-eggs.prv.js';
+const easterEggFile = '../../../config/easter-eggs.prv.js';
+const exampleEasterEggFile = '../../../config/example.easter-eggs.prv.js';
 const EASTER_EGGS = fs.existsSync(path.join(__dirname, easterEggFile)) ? require(easterEggFile) : require(exampleEasterEggFile);
 
 
