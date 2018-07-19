@@ -19,6 +19,6 @@ process.on('SIGINT', () => {
 
 console.log('Starting Front door server...');
 
-mainServer.start(3000);
+mainServer.start(PORT);
 
 console.log('server Running on port ' + PORT + '.');
