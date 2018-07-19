@@ -5,16 +5,20 @@ const bodyParser = require('body-parser');
 const welcome = require('../operators/1290-main-menu/welcome.js');
 const entrypoint = require('../operators/1290-main-menu/entrypoint.js');
 
-let publicAssetsDir = path.join(__dirname + '../../../assets/public');
+let publicAssetsDir = path.join(__dirname, '../../assets/public');
 
 const app = express();
 
 
 
 // Config
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded());
 
 //Static server
+app.use('/assets', (err, req, resp, next) => {
+    console.log('Incoming /assets request: ', req.path);
+    next();
+});
 app.use('/assets', express.static(publicAssetsDir));
 
 

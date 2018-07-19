@@ -1,18 +1,23 @@
 const fs = require('fs');
+const path = require('path');
 const _ = require('lodash');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 const ENV_VARS = require('../../../cfg.prv.js');
 
+//Load codes and phoen numbers
 const ACCESS_CODE = ENV_VARS.ACCESS_CODE;
-const ACCESS_CODE_DIGITS = Math.max(ENV_VARS.ACCCESS_CODE_DIGITS, 4);
+const ACCESS_CODE_DIGITS = Math.max(ENV_VARS.ACCESS_CODE_DIGITS, 4);
 const CALL_NUMS = ENV_VARS.CALL_NUMS;
 const OPEN_DOOR_DIAL = ENV_VARS.OPEN_DOOR_DIAL;
 
-const easterEggFile = '../../../easter-eggs.prv';
-const exampleEasterEggFile = '../../../example.easter-eggs.prv';
-const EASTER_EGGS = fs.existsSync(easterEggFile) ? require(easterEggFile) : require(exampleEasterEggFile);
+//Load Easter Eggs
+const easterEggFile = '../../../easter-eggs.prv.js';
+const exampleEasterEggFile = '../../../example.easter-eggs.prv.js';
+const EASTER_EGGS = fs.existsSync(path.join(__dirname, easterEggFile)) ? require(easterEggFile) : require(exampleEasterEggFile);
 
+
+//Check required vars
 if (_.isUndefined(ACCESS_CODE)) {
     console.warn('Warning: No ACCESS_CODE set');
     console.log(ENV_VARS)
@@ -21,6 +26,8 @@ if (_.isUndefined(ACCESS_CODE)) {
 if (_.isEmpty(CALL_NUMS)) {
     console.warn('Warning: No CALL_NUMS set.');
 }
+
+console.log('Access code digits', ACCESS_CODE_DIGITS)
 
 module.exports = {
     main: function () {
@@ -93,8 +100,8 @@ module.exports = {
         if (body.Digits === ACCESS_CODE) {
             return this.accessGranted();
         }
-        else if (body.Digits in Object.keys(EASTER_EGGS)) {
-            return EASTER_EGGS[body.Digits];
+        else if (_.has(EASTER_EGGS, body.Digits)) {
+            return EASTER_EGGS[body.Digits]();
         } else {
             return this.accessDenied();
         }
