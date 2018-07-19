@@ -1,10 +1,11 @@
+const fs = require('fs');
 const _ = require('lodash');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 const ENV_VARS = require('../../../cfg.prv.js');
 
-const ACCESS_CODE = ENV_VARS.ACCCESS_CODE;
-const ACCESS_CODE_DIGITS = Math.max(ENV_VARS.ACCCESS_CODE.DIGITS, 4);
+const ACCESS_CODE = ENV_VARS.ACCESS_CODE;
+const ACCESS_CODE_DIGITS = Math.max(ENV_VARS.ACCCESS_CODE_DIGITS, 4);
 const CALL_NUMS = ENV_VARS.CALL_NUMS;
 const OPEN_DOOR_DIAL = ENV_VARS.OPEN_DOOR_DIAL;
 
@@ -14,6 +15,7 @@ const EASTER_EGGS = fs.existsSync(easterEggFile) ? require(easterEggFile) : requ
 
 if (_.isUndefined(ACCESS_CODE)) {
     console.warn('Warning: No ACCESS_CODE set');
+    console.log(ENV_VARS)
 }
 
 if (_.isEmpty(CALL_NUMS)) {
