@@ -12,6 +12,10 @@ if (_.isUndefined(PORT)) {
     PORT = DEFAULT_DEV_PORT;
 }
 
+process.on('SIGINT', () => {
+    console.log('Exiting...');
+    process.exit(0);
+});
 
 console.log('Starting Front door server...');
 
