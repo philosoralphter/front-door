@@ -90,13 +90,9 @@ module.exports = {
         if (body.Digits === ACCESS_CODE) {
             return this.accessGranted();
         }
-        else if (body.Digits === '1701' ) {
-            return easterEggs.beamUp();
-        }else if (body.Digits === '1700' || body.Digits === '1702' ) {
-            return easterEggs.beamUpFail();
-        } else if (body.Digits === '69' || body.Digits === '6969'){
-            return easterEggs.kayron();
-        }else {
+        else if (body.Digits in Object.keys(EASTER_EGGS)) {
+            return EASTER_EGGS[body.Digits];
+        } else {
             return this.accessDenied();
         }
     },
@@ -130,46 +126,8 @@ module.exports = {
     noResponse: function () {
         const response = new VoiceResponse();
         response.say('No response received.  Goodbye.');
-
+        response.hangup();
+        return response.toString();
     }
 };
 
-
-let easterEggs = {
-    kayron: () => {
-        const response = new VoiceResponse();
-        response.say('Is that you? Kay Ron?');
-        response.hangup();
-        return response.toString();
-    },
-
-    beamUp: () => {
-        let response = new VoiceResponse();
-
-        response.pause('1');
-
-        response.say({voice: 'alice'}, 'Standby for transport.');
-
-        response.play('./assets/tng_transporter6_clean.mp3');
-
-        response.hangup();
-
-        return response.toString();
-    },
-
-    beamUpFail: () => {
-        let response = new VoiceResponse();
-
-        response.pause('1');
-
-        response.say({voice: 'alice'}, 'Standby for transport.');
-
-        response.play('./assets/tng_transporter_materializationproblem.mp3');
-
-        response.say({voice: 'alice'}, 'Transporter Malfunction.  You\'ll have to take the stairs.');
-
-        response.hangup();
-
-        return response.toString();
-    }
-};
