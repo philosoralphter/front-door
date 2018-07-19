@@ -12,13 +12,9 @@ const app = express();
 
 
 // Config
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
 
 //Static server
-app.use('/assets', (err, req, resp, next) => {
-    console.log('Incoming /assets request: ', req.path);
-    next();
-});
 app.use('/assets', express.static(publicAssetsDir));
 
 

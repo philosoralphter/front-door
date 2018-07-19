@@ -27,8 +27,6 @@ if (_.isEmpty(CALL_NUMS)) {
     console.warn('Warning: No CALL_NUMS set.');
 }
 
-console.log('Access code digits', ACCESS_CODE_DIGITS)
-
 module.exports = {
     main: function () {
         const response = new VoiceResponse();
