@@ -4,6 +4,7 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const ENV_VARS = require('../../../cfg.prv.js');
 
 const ACCESS_CODE = ENV_VARS.ACCCESS_CODE;
+const ACCESS_CODE_DIGITS = Math.max(ENV_VARS.ACCCESS_CODE.DIGITS, 4);
 const CALL_NUMS = ENV_VARS.CALL_NUMS;
 
 if (_.isUndefined(ACCESS_CODE)) {
@@ -48,7 +49,7 @@ module.exports = {
             //Accept code
             const gather = response.gather({
                 input: 'dtmf',
-                numDigits: 4,
+                numDigits: ACCESS_CODE_DIGITS,
                 timeout: 4,
                 action: '/check-code',
                 method: 'POST'

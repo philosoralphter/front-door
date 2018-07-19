@@ -6,5 +6,5 @@ module.exports = {
     CALL_NUMS: [], //list phone number strings in xxxxxxxxxx, xxx-xxx-xxxx, or E111 format
 
     ACCESS_CODE: '1234',
-    ACCESS_CDOE_DIGITS: 4 //code is checked immediately after N digits entered
+    ACCESS_CODE_DIGITS: 4 //code is checked immediately after N digits entered
 };

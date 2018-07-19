@@ -13,6 +13,8 @@ const app = express();
 
 // Config
 app.use(bodyParser.urlencoded({extended: true}));
+
+//Static server
 app.use('/assets', express.static(publicAssetsDir));
 
 

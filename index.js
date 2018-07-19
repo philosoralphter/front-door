@@ -13,7 +13,6 @@ if (_.isUndefined(PORT)) {
 }
 
 
-
 console.log('Starting Front door server...');
 
 mainServer.start(3000);
