@@ -1,13 +1,18 @@
-
 const _ = require('lodash');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 const ENV_VARS = require('../../../cfg.prv');
 
 const ACCESS_CODE = ENV_VARS.ACCCESS_CODE;
-const CALL_NUMS = ENV_VARS.ringThese;
+const CALL_NUMS = ENV_VARS.CALL_NUMS;
 
+if (_.isUndefined(ACCESS_CODE)) {
+    console.warn('Warning: No ACCESS_CODE set');
+}
 
+if (_.isEmpty(CALL_NUMS)) {
+    console.warn('Warning: No CALL_NUMS set.');
+}
 
 module.exports = {
     main: function () {
