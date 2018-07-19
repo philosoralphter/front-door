@@ -8,7 +8,9 @@ const ACCESS_CODE_DIGITS = Math.max(ENV_VARS.ACCCESS_CODE.DIGITS, 4);
 const CALL_NUMS = ENV_VARS.CALL_NUMS;
 const OPEN_DOOR_DIAL = ENV_VARS.OPEN_DOOR_DIAL;
 
-const EASTER_EGGS = require('../../../easter-eggs.prv');
+const easterEggFile = '../../../easter-eggs.prv';
+const exampleEasterEggFile = '../../../example.easter-eggs.prv';
+const EASTER_EGGS = fs.existsSync(easterEggFile) ? require(easterEggFile) : require(exampleEasterEggFile);
 
 if (_.isUndefined(ACCESS_CODE)) {
     console.warn('Warning: No ACCESS_CODE set');
