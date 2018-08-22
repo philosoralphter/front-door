@@ -18,7 +18,7 @@ const EASTER_EGGS = fs.existsSync(path.join(__dirname, easterEggFile)) ? require
 
 //load persons with personalized access codes
 const PRIVATE_ACCESS = {};
-_.each(ENV_VARS.PEOPLE, (person) => {
+_.each(ENV_VARS.PERSONAL_ACCESS, (person) => {
     PRIVATE_ACCESS[person.code] = new PersonalAccess(person.code, person.name, person.say);
 });
 
@@ -171,23 +171,24 @@ function PersonalAccess(code, name, say) {
 
             } else if (_.isString(say)) {
                 response.say(say);
-            } else if ( _.isUndefined(say)) {
+            } else if ( _.isNil(say)) {
                 response.say('Welcome, ' + name);
                 response.say({voice: 'alice'}, 'Access Granted');
             }
 
         })(say);
 
-        console.log({
-            timestamp: Date.now(),
-            code: code,
-            name: name
-        });
 
         response.play({digits: OPEN_DOOR_DIAL});
 
         response.pause(1);
         response.hangup();
+
+        console.log({
+            timestamp: Date.now(),
+            code: code,
+            name: name
+        });
 
         return response.toString();
     }
