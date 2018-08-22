@@ -5,7 +5,7 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 const ENV_VARS = require('../../../config/cfg.prv.js');
 
-//Load codes and phoen numbers
+//Load codes and phone numbers
 const ACCESS_CODE = ENV_VARS.ACCESS_CODE;
 const ACCESS_CODE_DIGITS = Math.max(ENV_VARS.ACCESS_CODE_DIGITS, 4);
 const CALL_NUMS = ENV_VARS.CALL_NUMS;
@@ -16,6 +16,11 @@ const easterEggFile = '../../../config/easter-eggs.prv.js';
 const exampleEasterEggFile = '../../../config/example.easter-eggs.prv.js';
 const EASTER_EGGS = fs.existsSync(path.join(__dirname, easterEggFile)) ? require(easterEggFile) : require(exampleEasterEggFile);
 
+//load persons with personalized access codes
+const PRIVATE_ACCESS = {};
+_.each(ENV_VARS.PEOPLE, (person) => {
+    PRIVATE_ACCESS[person.code] = new PersonalAccess(person.code, person.name, person.say);
+});
 
 //Check required vars
 if (_.isUndefined(ACCESS_CODE)) {
@@ -100,6 +105,9 @@ module.exports = {
         }
         else if (_.has(EASTER_EGGS, body.Digits)) {
             return EASTER_EGGS[body.Digits]();
+        }
+        else if (_.has(PRIVATE_ACCESS, body.Digits)) {
+            return PRIVATE_ACCESS[body.Digits]();
         } else {
             return this.accessDenied();
         }
@@ -147,3 +155,40 @@ module.exports = {
     }
 };
 
+
+//Util
+function PersonalAccess(code, name, say) {
+    return function () {
+        const response = new VoiceResponse();
+
+        (function parseSay(say) {
+
+            if (_.isArray(say)) {
+                _.each(say, parseSay)
+
+            } else if (_.isObject(say)) {
+                response.say(say.settings, say.text)
+
+            } else if (_.isString(say)) {
+                response.say(say);
+            } else if ( _.isUndefined(say)) {
+                response.say('Welcome, ' + name);
+                response.say({voice: 'alice'}, 'Access Granted');
+            }
+
+        })(say);
+
+        console.log({
+            timestamp: Date.now(),
+            code: code,
+            name: name
+        });
+
+        response.play({digits: OPEN_DOOR_DIAL});
+
+        response.pause(1);
+        response.hangup();
+
+        return response.toString();
+    }
+}
