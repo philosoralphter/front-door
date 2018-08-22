@@ -25,7 +25,7 @@ docker push $REPO:$BUILD
 #Check push was successful
 if [ $? -eq 0 ]
 then
-    echo -e "\nPush Successful."
+    echo -e "\nPush Successful for commit [$BUILD]."
 else
     echo -e "\nPush Failed with code $?"
     exit 1
