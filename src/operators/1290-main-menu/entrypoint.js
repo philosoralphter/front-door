@@ -38,8 +38,9 @@ module.exports = {
             method: 'POST'
         });
 
-        response.pause('2');
-        gather.say('Welcome to fog-set, tower.  Press 1, or hold, to call the tenant.  Press 2 if you have an access code.');
+        response.pause(2);
+        // gather.say('Welcome to fog-set, tower.  Press 1, or hold, to call the tenant.  Press 2 if you have an access code.');
+        gather.say('Welcome to fog-set, tower.  To call the tenant, Press 1, or wait.  If you have an access code, press 2.');
 
         //if no input
         response.redirect({
@@ -109,6 +110,8 @@ module.exports = {
 
         response.say('System Error. Access Cannot be granted at this time via unit 3 0 4. Goodbye.');
 
+        response.hangup();
+
         return response.toString();
     },
 
@@ -116,6 +119,8 @@ module.exports = {
         const response = new VoiceResponse();
 
         response.say('Access Denied');
+
+        response.hangup();
 
         return response.toString();
     },
@@ -125,6 +130,10 @@ module.exports = {
 
         response.say('Access Granted');
         response.play({digits: OPEN_DOOR_DIAL});
+
+        response.pause(1);
+        response.hangup();
+
 
         return response.toString();
     },
