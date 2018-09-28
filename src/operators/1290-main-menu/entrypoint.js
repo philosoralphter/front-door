@@ -38,12 +38,12 @@ module.exports = {
         const gather = response.gather({
             input: 'dtmf',
             numDigits: 1,
-            timeout: 7,
+            timeout: 3,
             action: '/handle-input',
             method: 'POST'
         });
 
-        response.pause(2);
+        response.pause(1);
         // gather.say('Welcome to fog-set, tower.  Press 1, or hold, to call the tenant.  Press 2 if you have an access code.');
         gather.say('Welcome to fog-set, tower.  To call the tenant, Press 1, or wait.  If you have an access code, press 2.');
 
