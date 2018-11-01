@@ -17,6 +17,16 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 
+process.on('exit', (exitCode) => {
+    console.log('Exiting with code: ', exitCode);
+    process.exit();
+});
+
+process.on('uncaughtException', (err) => {
+    console.log('Caught exception: err');
+    process.exit();
+});
+
 console.log('Starting Front door server...');
 
 mainServer.start(PORT);
